@@ -25,7 +25,7 @@ class TransactionList extends StatelessWidget {
                 )),
                 padding: const EdgeInsets.all(10),
                 child: Text(
-                  '\$${userTransactions[i].amount}',
+                  '\$${userTransactions[i].amount.toStringAsFixed(2)}',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style:

@@ -1,20 +1,29 @@
 import "package:flutter/material.dart";
 
-class NewTransaction extends StatelessWidget {
+class NewTransaction extends StatefulWidget {
   final Function addNewTransaction;
-  NewTransaction({Key? key, required this.addNewTransaction}) : super(key: key);
+  NewTransaction(this.addNewTransaction);
+
+  @override
+  State<NewTransaction> createState() => _NewTransactionState();
+}
+
+class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
+
   final amountController = TextEditingController();
-  // NewTransaction({required this.addTx});
   void submitdata() {
     final enteredTitle = titleController.text;
-    final enteredAmount = double.parse(amountController.text);
+    final enteredAmount =  double.parse(amountController.text);
     if (enteredTitle.isEmpty || enteredAmount <= 0) {
       return;
     }
-    addNewTransaction(
+    widget.addNewTransaction(
         titleController.text, double.parse(amountController.text));
+
+        Navigator.of(context).pop();
   }
+  // NewTransaction({required this.addTx});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +36,7 @@ class NewTransaction extends StatelessWidget {
             TextField(
               decoration: const InputDecoration(labelText: "Title"),
               controller: titleController,
-              onSubmitted: (_) => submitdata(),
+              // onSubmitted: (_) => submitdata(),
 
               // onChanged: (value){
               //   titleInput = value.trim();
@@ -38,9 +47,6 @@ class NewTransaction extends StatelessWidget {
               controller: amountController,
               keyboardType: TextInputType.number,
               onSubmitted: (_) => submitdata(),
-              // onChanged: (value){
-              //   amountInput = value.trim();
-              // },
             ),
             TextButton(
               style: TextButton.styleFrom(alignment: Alignment.bottomRight),
