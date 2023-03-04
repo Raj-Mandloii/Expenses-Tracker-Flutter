@@ -1,12 +1,13 @@
-import '../models/transactions.dart';
+// import '../models/transactions.dart';
 import "package:flutter/material.dart";
-import './new_transaction.dart';
+// import './new_transaction.dart';
 import './transaction_list.dart';
 
 class UserTransaction extends StatefulWidget {
   // const UserTransaction({Key? key}) : super(key: key);
   final List userTransactions;
-  UserTransaction(this.userTransactions);
+  final Function deleteTx;
+  UserTransaction(this.userTransactions, this.deleteTx);
   @override
   UserTransactionState createState() => UserTransactionState();
 }
@@ -44,7 +45,7 @@ class UserTransactionState extends State<UserTransaction> {
     return Column(
       children: [
         // NewTransaction(_addNewTransaction),
-        TransactionList(userTransactions: widget.userTransactions),
+        TransactionList(userTransactions: widget.userTransactions,deleteTx: widget.deleteTx),
       ],
     );
   }

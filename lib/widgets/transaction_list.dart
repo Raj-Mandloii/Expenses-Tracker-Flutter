@@ -4,56 +4,71 @@ import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List userTransactions;
-  const TransactionList({Key? key, required this.userTransactions})
+  final Function deleteTx;
+  const TransactionList(
+      {Key? key, required this.userTransactions, required this.deleteTx})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 500,
-      child: ListView.builder(
-        itemBuilder: (ctx,i) {
-          return Card(
-            child: Row(children: <Widget>[
-              Container(
-                width: 120,
-                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                decoration: BoxDecoration(
-                    border: Border.all(
-                  color: Colors.black,
-                  width: 1,
-                )),
-                padding: const EdgeInsets.all(10),
-                child: Text(
-                  '\$${userTransactions[i].amount.toStringAsFixed(2)}',
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style:
-                      const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return userTransactions.isEmpty
+        ? LayoutBuilder(
+            builder: (ctx, constriants) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    userTransactions[i].title,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                  const SizedBox(
+                    height: 20,
                   ),
-                  Text(
-                    DateFormat().format(userTransactions[i].date),
-                    style: const TextStyle(fontSize: 18, color: Colors.grey),
-                  )
+                  const Center(
+                    child: Text("No transactions added yet"),
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  Container(
+                       height: 200,
+                      child: Image.asset(
+                        'assets/images/waiting.png',
+                        fit: BoxFit.cover,
+                      ))
                 ],
-              )
-            ]),
+              );
+            },
+          )
+        : ListView.builder(
+            itemBuilder: (ctx, i) {
+              return Card(
+                elevation: 5,
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 30,
+                    child: Container(
+                      height: 20,
+                      child: FittedBox(
+                        child: Text(
+                            '\$${userTransactions[i].amount.toStringAsFixed(2)}'),
+                      ),
+                    ),
+                  ),
+                  title: Text(userTransactions[i].title),
+                  subtitle: Text(DateFormat().format(userTransactions[i].date)),
+                  trailing: IconButton(
+                    onPressed: () => deleteTx(userTransactions[i].id),
+                    icon: const Icon(
+                      Icons.delete,
+                      color: Colors.teal,
+                    ),
+                  ),
+                ),
+              );
+            },
+            itemCount: userTransactions.length,
+            // children: userTransactions.map((tx) {
+            //   return
+            // }).toList(),
           );
-        },
-        itemCount: userTransactions.length,
-        // children: userTransactions.map((tx) {
-        //   return 
-        // }).toList(),
-      ),
-    );
   }
 }
